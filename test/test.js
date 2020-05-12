@@ -1,1 +1,0 @@
-/* Message printing */module.exports = {message:function(msg){console.log(`Bonjoure ${msg}`);},}
