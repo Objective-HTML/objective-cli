@@ -34,7 +34,7 @@ class CLI {
                          const app = require(PATH.resolve(PATH.join(__dirname, 'commands', i)))
                          
                          if (this.args.includes(app.name)) {
-                              app.exec()
+                              app.exec(this.args, this.options, this.dir)
                          }
 
                     }
