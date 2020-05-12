@@ -22,17 +22,15 @@ module.exports = class Objective {
                     if (status.isDirectory()) {
                          const code = new Map()
                          new File(this.input).filewalker((error, files) => {
-                              if (error) throw error 
+                              if (error) throw error
                               for (const i of files) {
                                    if (i.endsWith('.html')) {
                                         FS.readFile(i, 'UTF-8', (error, content) => {
                                              if (error) throw error
                                              code.set(i, new Transpiler(content).transpile())
-                                             if (code.size === files.length) {
-                                                  resolve(code)
-                                             }
+                                             if (code.size === files.length) resolve(code)
                                         })
-                                   }
+                                   } else FS.unlink(i, () => {files.splice(files[files.indexOf(i)], 1)})
                               }
                          })
                     } else {
