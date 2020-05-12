@@ -19,12 +19,11 @@ module.exports = class Objective {
      transpile () {
           return new Promise ((resolve, reject) => {
                let file = this.input
-               FS.stat(this.input, (error, status) => {
+               FS.stat(PATH.resolve(file), (error, status) => {
                     if (error) throw error
                     if (status.isFile()) file = PATH.dirname(this.input)
                     const code = new Map()
-                    new File(file).filewalker((error, files) => {
-                         if (error) throw error
+                    new File(file).filewalker().then(files => {
                          for (const i of files) {
                               if (i.endsWith('.html')) {
                                    FS.readFile(i, 'UTF-8', (error, content) => {
