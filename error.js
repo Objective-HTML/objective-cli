@@ -13,13 +13,14 @@ module.exports = class {
             text: CHALK.gray('ERROR'),
             width: 70
         })
+        CLIUI.div({text: ''})
         CLIUI.div({
             text: CHALK.white(message),
             width: 70
         })
         CLIUI.div({text: ''})
 
-        console.log('\n' + CHALK.hex('#ffffff')(BOXEN(CLIUI.toString(), {align: 'center', padding: {left: 5, right: 5}})) + '\n')
+        console.log('\n' + CHALK.hex('#ffffff')(BOXEN(CLIUI.toString(), {align: 'center', padding: {left: 11, right: 11}})) + '\n')
     }
 
 }

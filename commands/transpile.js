@@ -34,7 +34,7 @@ module.exports = {
                 }
             } else {
 
-                new Error('The file you specified does not exist!')
+                return new Error('The file you specified does not exist!')
 
             }
         })
