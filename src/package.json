@@ -1,0 +1,22 @@
+{
+  "name": "objective-html-nodejs",
+  "version": "1.0.0",
+  "description": "Objective HTML is an HTML Styled functionnal language.",
+  "main": "html.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "nodemon": "nodemon html.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NessMC/objective-html.git"
+  },
+  "author": "NessMC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NessMC/objective-html/issues"
+  },
+  "homepage": "https://github.com/NessMC/objective-html#readme"
+}

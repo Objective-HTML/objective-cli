@@ -1,0 +1,20 @@
+{
+  "name": "objective-cli",
+  "version": "1.0.0",
+  "description": "👩‍💻 Objective HTML CLI.",
+  "main": "main.js",
+  "bin": {
+    "objective": "./main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Objective-HTML/objective-cli.git"
+  },
+  "author": "NessMC",
+  "license": "ISC",
+  "preferGlobal": true,
+  "bugs": {
+    "url": "https://github.com/Objective-HTML/objective-cli/issues"
+  },
+  "homepage": "https://github.com/Objective-HTML/objective-cli#readme"
+}
