@@ -3,6 +3,7 @@
          OBJECTIVE HTML
               Main
 //////////////////////////////*/
+
 const FS   = require('fs'),
       PATH = require('path')
 
@@ -24,7 +25,7 @@ class CLI {
 
           return new Promise ((resolve, reject) => {
                FS.readdir(PATH.resolve(PATH.join(__dirname, 'commands')), (error, content) => {
-                    if (error) throw error
+                    if (error) return console.log(`❌  •  ${COLORS.red('An error occured! (' + error.message +').')}`)
                     for (const i of content) {
                          const app = require(PATH.resolve(PATH.join(__dirname, 'commands', i)))
                          this.cmds.push({

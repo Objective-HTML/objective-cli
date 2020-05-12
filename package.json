@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Objective-HTML/objective-cli#readme",
   "dependencies": {
-    "chokidar": "^3.4.0"
+    "chokidar": "^3.4.0",
+    "colors": "^1.4.0",
+    "node-emoji": "^1.10.0"
   }
 }
