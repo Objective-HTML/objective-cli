@@ -46,7 +46,7 @@ class CLI {
           for (const argument of this.args) {
                for (const command of this.cmds) {
                     if (argument.toLowerCase() === command.name) {
-                         command.exec(this.args, this.dir)
+                         command.exec(this.args, this.dir, this.options)
                     }
                }
           }
