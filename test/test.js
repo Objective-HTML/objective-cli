@@ -1,1 +1,1 @@
-/* Message printing */module.exports = {message:function(msg){console.log(`Bonjour ${msg}`);},}
+/* Message printing */module.exports = {message:function(msg){console.log(`Bonjoure ${msg}`);},}

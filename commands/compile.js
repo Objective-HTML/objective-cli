@@ -1,6 +1,7 @@
 const Objective = require('../src/html'),
       FS        = require('fs'),
-      PATH      = require('path')
+      PATH      = require('path'),
+      CHOKIDAR  = require('chokidar')
 
 module.exports = {
     name: 'compile',
@@ -13,24 +14,20 @@ module.exports = {
             dir_obj = PATH.join(dir, file)
             if (stats.isFile()) dir_obj = PATH.dirname(dir_obj)
             const OBJ = new Objective(dir_obj)
-            const transpile = function () {
+            const compile = function () {
                 OBJ.transpile().then(content => {
-                    for (const i of content) {  
+                    for (const i of content) {
                         FS.writeFile(PATH.resolve(i[0].replace('.html', '.js')), i[1], error => {
                             if (error) throw error
-                            console.log(i[0].slice(dir.length, i[0].length).replace(/\\/g, '/t'))
+                            console.log(`File ${i[0].slice(dir.length, i[0].length).replace(/\\/g, '/t')} has been transpiled.`)
                         })
                     }
                 })
             }
             if (options.filter(x => x.includes('watch')).length > 0) {
-                FS.watch(dir_obj, (event, filename) => {
-                    if (filename.endsWith('.html')) {
-                        transpile()
-                    }
+                CHOKIDAR.watch(dir_obj, {ignored: /(.*).js/}).on('change', (event, path) => {
+                    compile()
                 })
-            } else {
-                transpile()
             }
         })
     }

@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Objective-HTML/objective-cli/issues"
   },
-  "homepage": "https://github.com/Objective-HTML/objective-cli#readme"
+  "homepage": "https://github.com/Objective-HTML/objective-cli#readme",
+  "dependencies": {
+    "chokidar": "^3.4.0"
+  }
 }
