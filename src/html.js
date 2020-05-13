@@ -21,7 +21,7 @@ module.exports = class Objective {
           const test = []
 
           function readFile (file) {
-               const content = FS.readFileSync(path.resolve(path.join(__dirname, file)), 'UTF-8')
+               const content = FS.readFileSync(file, 'UTF-8')
                test.push(file)
                for (const item of new Parser(content).parse()) {
                     if (item.type.endsWith('_START') && item.block === 'import') {
@@ -39,7 +39,7 @@ module.exports = class Objective {
           const files = new Transpiler(test.reverse()).transpile()
 
           for (const file of files) {
-               FS.writeFileSync(path.resolve(path.join(file[0].replace('.html', '.js'))), file[1])
+               FS.writeFileSync(file[0].replace('.html', '.js'), file[1])
           }
 
 
