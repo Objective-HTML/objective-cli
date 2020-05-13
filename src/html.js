@@ -4,9 +4,9 @@
 //////////////////////////////*/
 
 const Transpiler = require('./core/transpiler')
-const File       = require('./core/file')
 const FS         = require('fs')
-const PATH       = require('path')
+const Parser     = require('./core/parser')
+const path       = require('path')
 
 module.exports = class Objective {
 
@@ -17,26 +17,31 @@ module.exports = class Objective {
      }
  
      transpile () {
-          return new Promise ((resolve, reject) => {
-               let file = this.input
-               FS.stat(PATH.resolve(file), (error, status) => {
-                    if (error) throw error
-                    if (status.isFile()) file = PATH.dirname(this.input)
-                    const code = new Map()
-                    new File(file).filewalker().then(files => {
-                         for (const i of files) {
-                              if (i.endsWith('.html')) {
-                                   FS.readFile(i, 'UTF-8', (error, content) => {
-                                        if (error) throw error
-                                        code.set(i, new Transpiler(content).transpile())
-                                        if (code.size === files.length) resolve(code)
-                                   })
-                              } else FS.unlink(i, () => {files.splice(files[files.indexOf(i)], 1)})
-                         }
-                    })
-               })
+          
+          const test = []
 
-          })
+          function readFile (file) {
+               const content = FS.readFileSync(path.resolve(path.join(__dirname, file)), 'UTF-8')
+               test.push(file)
+               for (const item of new Parser(content).parse()) {
+                    if (item.type.endsWith('_START') && item.block === 'import') {
+                         for (const param of item.parameters) {
+                              if (param.name === 'src') {
+                                   readFile(path.dirname(file) + '/' + param.value + '.html')
+                              }
+                         }
+                    }
+               }
+          }
+
+          readFile(this.input)
+
+          const files = new Transpiler(test.reverse()).transpile()
+
+          for (const file of files) {
+               FS.writeFileSync(path.resolve(path.join(file[0].replace('.html', '.js'))), file[1])
+          }
+
 
      }
 

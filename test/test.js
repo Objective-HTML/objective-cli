@@ -1,1 +1,1 @@
-console.log('test');
+module.exports = {test:function(){console.log('coucou');},}
