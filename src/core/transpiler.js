@@ -30,14 +30,12 @@ module.exports   = class Transpiler {
     let   export_stat = false
     
     for (const parsed of this.parser) {
-      let previous_block = ''
       for (const i of parsed) {
         const block  = i.block      || new String(''),
               id     = i.id         || new Number(0),
               type   = i.type       || new String(''),
               args   = i.args       || new Array(),
-              params = i.parameters || new Array(),
-              all    = i.all        || new Array()
+              params = i.parameters || new Array()
         if (type === 'TEXT') {
           if (block.match(/\{(.*)\}/g)) {
             code.push('`' +block.replace(/\{/g, '${') + '`')
@@ -178,7 +176,6 @@ module.exports   = class Transpiler {
       all.set(this.filename[this.parser.indexOf(parsed)], code.join(''))
       code = []
     }
-
     return all
   }
 

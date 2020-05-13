@@ -39,10 +39,17 @@ module.exports = {
     exec: function (args, options, dir) {
         const file     = args[args.indexOf(this.name) + 1]
         const file_dir = PATH.resolve(PATH.join(dir, file))
-
         FS.exists(file_dir, exist => {
             if (exist) {
-                this.write(file_dir, file)
+                if (options.filter(x => x.includes('watch')).length > 0) {
+                    CHOKIDAR.watch(file, {
+                        ignored: /(.*)\.js/
+                    }).on('change', () => {
+                        this.write(file_dir, file)
+                    })
+                } else {
+                    this.write(file_dir, file)
+                }
             } else {
 
                 return new Error('The file you specified does not exist!')

@@ -27,7 +27,7 @@ module.exports = class Objective {
                     if (item.type.endsWith('_START') && item.block === 'import') {
                          for (const param of item.parameters) {
                               if (param.name === 'src') {
-                                   readFile(path.dirname(file) + '/' + param.value + '.html')
+                                   readFile(path.dirname(file) + '\\' + param.value + '.html')
                               }
                          }
                     }
@@ -37,7 +37,7 @@ module.exports = class Objective {
           readFile(this.input)
 
           const files = new Transpiler(test.reverse()).transpile()
-
+          
           for (const file of files) {
                FS.writeFileSync(file[0].replace('.html', '.js'), file[1])
           }
