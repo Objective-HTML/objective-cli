@@ -14,33 +14,26 @@ module.exports = {
     args: '[file]',
     write: (dir, file) => {
         const OBJ  = new Objective(dir)
-        OBJ.transpile().then(content => {
-            for (const i of content) {
-                FS.writeFile(PATH.resolve(i[0].replace('.html', '.js')), i[1], error => {
-                    if (error) throw error
-                })
-            }      
-        }).then(() => {
-            CHILD.exec(`node ${file.replace('.html', '.js')}`, (error, value, stderr) => {
-                if (error) return new Error(`An error occured:\n${error.message}`)
-                if (stderr) return new Error(`An error occured when executing program`)
-                CLIUI.div({text: ''})
-                CLIUI.div({
-                    text: CHALK.hex('#e32f12')(BOXEN('OBJECTIVE', {padding: {bottom: 0, top: 0, right: 10, left: 10}})),
-                    width: 50
-                })
-                CLIUI.div({text: ''})
-                CLIUI.div({
-                    text: CHALK.grey('CODE OUTPUT'),
-                    width: 50
-                })
-                CLIUI.div({text: ''})
-                CLIUI.div({
-                    text: value.trim()
-                })
-                CLIUI.div({text: ''})
-                console.log('\n' + CHALK.bgHex('#222222')(BOXEN(CLIUI.toString(), {align: 'center', padding: {bottom: 0, top: 0, right: 15, left: 14}, borderColor: '#222222',backgroundColor:'#222222'})) + '\n')
+        OBJ.transpile()
+        CHILD.exec(`node ${file.replace('.html', '.js')}`, (error, value, stderr) => {
+            if (error) return new Error(`An error occured:\n${error.message}`)
+            if (stderr) return new Error(`An error occured when executing program`)
+            CLIUI.div({text: ''})
+            CLIUI.div({
+                text: CHALK.hex('#e32f12')(BOXEN('OBJECTIVE', {padding: {bottom: 0, top: 0, right: 10, left: 10}})),
+                width: 50
             })
+            CLIUI.div({text: ''})
+            CLIUI.div({
+                text: CHALK.grey('CODE OUTPUT'),
+                width: 50
+            })
+            CLIUI.div({text: ''})
+            CLIUI.div({
+                text: value.trim()
+            })
+            CLIUI.div({text: ''})
+            console.log('\n' + CHALK.bgHex('#222222')(BOXEN(CLIUI.toString(), {align: 'center', padding: {bottom: 0, top: 0, right: 15, left: 14}, borderColor: '#222222',backgroundColor:'#222222'})) + '\n')
         })
     },
     exec: function (args, options, dir) {
