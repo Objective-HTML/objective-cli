@@ -3,46 +3,36 @@
               Main
 //////////////////////////////*/
 
-const Transpiler = require('./core/transpiler')
-const FS         = require('fs')
-const Parser     = require('./core/parser')
-const path       = require('path')
+const Transpiler = require('./core/transpiler'),
+      Parser     = require('./core/parser'),
+      FS         = require('fs'),
+      PATH       = require('path')
+
+const files = []
 
 module.exports = class Objective {
-
-     constructor (input) {
-
-          this.input = input
-
-     }
- 
+     
      transpile () {
-          
-          const test = []
-
           function readFile (file) {
-               const content = FS.readFileSync(file, 'UTF-8')
-               test.push(file)
+               const content = FS.readFileSync(PATH.resolve(PATH.join(__dirname, file)), 'UTF-8')
+               files.push(file)
                for (const item of new Parser(content).parse()) {
-                    if (item.type.endsWith('_START') && item.block === 'import') {
-                         for (const param of item.parameters) {
+                    if (item.type === 'START' && item.block === 'import') {
+                         for (const param of item.params) {
                               if (param.name === 'src') {
-                                   readFile(path.dirname(file) + '\\' + param.value + '.html')
+                                   readFile(PATH.dirname(file) + '/' + param.value + '.html')
                               }
                          }
                     }
                }
           }
-
-          readFile(this.input)
-
-          const files = new Transpiler(test.reverse()).transpile()
           
-          for (const file of files) {
-               FS.writeFileSync(file[0].replace('.html', '.js'), file[1])
-          }
-
+          readFile('tests/html/math.html')
+          
+          for (const file of new Transpiler(files.reverse()).transpile()) FS.writeFileSync(path.resolve(path.join(file[0].replace('.html', '.js'))), file[1])
 
      }
 
 }
+
+new Objective().transpile()
