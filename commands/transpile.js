@@ -10,7 +10,7 @@ const Objective = require('../src/html'),
 module.exports = {
     name: 'transpile',
     desc: 'Transpile Objective HTML code to Javascript code.',
-    args: '[file]',
+    args: '<file>',
     write: file => {
         const OBJ  = new Objective()
         OBJ.transpile(file)

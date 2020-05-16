@@ -9,7 +9,7 @@ const FS     = require('fs'),
 module.exports = {
     name: 'help',
     desc: 'Get Objective CLI help.',
-    args: '[command]',
+    args: '<command>',
     exec: function () {
         CLIUI.div({
             text: CHALK.hex('#e32f12')(BOXEN(FIGLET.textSync('OBJECTIVE', 'Rectangles'), {padding: {bottom: 1, top: 1, right: 5, left: 5}, align: 'center'})),

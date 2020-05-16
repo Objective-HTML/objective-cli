@@ -11,7 +11,7 @@ const Objective = require('../src/html'),
 module.exports = {
     name: 'exec',
     desc: 'Execute Objective HTML code.',
-    args: '[file]',
+    args: '<file>',
     write: (dir, file) => {
         const OBJ  = new Objective()
         OBJ.transpile(dir)
