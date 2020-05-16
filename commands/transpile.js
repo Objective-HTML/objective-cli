@@ -12,8 +12,8 @@ module.exports = {
     desc: 'Transpile Objective HTML code to Javascript code.',
     args: '[file]',
     write: file => {
-        const OBJ  = new Objective(file)
-        OBJ.transpile()
+        const OBJ  = new Objective()
+        OBJ.transpile(file)
         
         CLIUI.div({text: ''})
         CLIUI.div({

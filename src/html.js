@@ -12,9 +12,9 @@ const files = []
 
 module.exports = class Objective {
      
-     transpile () {
+     transpile (file) {
           function readFile (file) {
-               const content = FS.readFileSync(PATH.resolve(PATH.join(__dirname, file)), 'UTF-8')
+               const content = FS.readFileSync(file, 'UTF-8')
                files.push(file)
                for (const item of new Parser(content).parse()) {
                     if (item.type === 'START' && item.block === 'import') {
@@ -27,12 +27,10 @@ module.exports = class Objective {
                }
           }
           
-          readFile('tests/html/math.html')
+          readFile(file)
           
-          for (const file of new Transpiler(files.reverse()).transpile()) FS.writeFileSync(path.resolve(path.join(file[0].replace('.html', '.js'))), file[1])
+          for (const file of new Transpiler(files.reverse()).transpile()) FS.writeFileSync(file[0].replace('.html', '.js'), file[1])
 
      }
 
 }
-
-new Objective().transpile()
