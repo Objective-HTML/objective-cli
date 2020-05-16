@@ -13,8 +13,8 @@ module.exports = {
     desc: 'Execute Objective HTML code.',
     args: '[file]',
     write: (dir, file) => {
-        const OBJ  = new Objective(dir)
-        OBJ.transpile()
+        const OBJ  = new Objective()
+        OBJ.transpile(dir)
         CHILD.exec(`node ${file.replace('.html', '.js')}`, (error, value, stderr) => {
             if (error) return new Error(`An error occured:\n${error.message}`)
             if (stderr) return new Error(`An error occured when executing program`)
