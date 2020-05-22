@@ -108,6 +108,8 @@ module.exports = class Transpiler {
 
               }
             }
+          } else if (block === 'return') {
+            code.push('return ')
           } else if (block === 'function') {
             if (params.length > 0) {
               let NAME = undefined,
@@ -203,6 +205,8 @@ module.exports = class Transpiler {
             code.push('}')
           } else if (block === 'while') {
             code.push('}')
+          } else if (block === 'return') {
+            code.push('\n')
           } else {
             if (previous.includes('FUNCTION')) {
               if (previous.filter(x => x === 'FUNCTION').length === previous.length) {
