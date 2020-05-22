@@ -1,6 +1,6 @@
 {
   "name": "objective-cli",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "👩‍💻 Objective HTML CLI.",
   "main": "main.js",
   "bin": {
