@@ -31,6 +31,8 @@ module.exports = class Objective {
           
           for (const file of new Transpiler(files.reverse()).transpile()) FS.writeFileSync(path.resolve(path.join(file[0].replace('.html', '.js'))), file[1])
 
+          return new Transpiler(files.reverse()).transpile()
+
      }
 
 }
