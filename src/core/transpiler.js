@@ -3,10 +3,11 @@
            Transpiler
 //////////////////////////////*/
 
-const Parser     = require('./parser'),
-      Conditions = require('./tokens/conditions'),
-      FS         = require('fs'),
-      PATH       = require('path')
+const Parser     = require('./parser')
+const Conditions = require('./tokens/conditions')
+const FS         = require('fs')
+const PATH       = require('path')
+const Beautifer  = require('js-beautify')
 
 module.exports = class Transpiler {
 
@@ -32,13 +33,33 @@ module.exports = class Transpiler {
     for (const parsed of this.parser) {
       let previous = ''
       for (const i of parsed) {
-        const block  = i.block      || new String(''),
-              id     = i.id         || new Number(0),
-              type   = i.type       || new String(''),
-              args   = i.args       || new Array(),
-              params = i.params     || new Array(),
-              all    = i.all        || new Array()
-        if (type === 'TEXT') block.match(/\{\w+\}/g) !== null ? block.match(/\{\w+\}/g).length > 0 ? code.push('`' + block.replace(/\{/g, '${') + '`') : code.push('\'' + block + '\'') : code.push('\'' + block + '\'')
+        const block  = i.block      || String(''),
+              id     = i.id         || Number(0),
+              type   = i.type       || String(''),
+              args   = i.args       || [],
+              params = i.params     || [],
+              all    = i.all        || []
+        if (type === 'TEXT') {
+          if (block.includes(':')) {
+            code.push('[' + block.slice(0, block.length - 1).replace(/:/g, ',') + ']')
+          } else if (block.match(/\d+/g)) {
+            if (block.match(/\d+/g).join(' ').trim().length === block.length) {
+              code.push(parseInt(block))
+            } else {
+              code.push('\'' + block + '\'')
+            }
+          } else {
+            if (block.match(/\{\w+\}/g)) {
+              if (block.match(/\{\w+\}/g).length > 0) {
+                code.push('`' + block.replace(/\{/g, '${') + '`')
+              } else {
+                code.push('\'' + block + '\'')
+              }
+            } else {
+              code.push('\'' + block + '\'')
+            }
+          }
+        }
         else if (type === 'VARIABLE') code.push(block.slice(1, block.length - 1))
         else if (type === 'START') {
 
@@ -74,9 +95,11 @@ module.exports = class Transpiler {
               }
               if (NAME) {
                 if (variables.includes(NAME)) {
-                  code.push(`${NAME}=`)
-                  if (code.filter(x => (x.startsWith('const') || x.startsWith('let')) && x.includes(NAME)).length > 0) {
-                    code[code.indexOf(code.filter(x => (x.startsWith('const') || x.startsWith('let')) && x.includes(NAME))[0])] = `let ${NAME}=`
+                  if (code.length > 0) {
+                    // code.filter(x => console.log(x.toString()))
+                    if (code.filter(x => (x.toString().startsWith('const') || x.toString().startsWith('let')) && x.toString().includes(NAME)).length > 0) {
+                      code[code.indexOf(code.filter(x => (x.toString().startsWith('const') || x.toString().startsWith('let')) && x.toString().includes(NAME))[0])] = `let ${NAME}=`
+                    }
                   }
                 } else {
                   variables.push(NAME)
@@ -196,7 +219,7 @@ module.exports = class Transpiler {
         }
       }
 
-      all.set(this.filename[this.parser.indexOf(parsed)], code.join(''))
+      all.set(this.filename[this.parser.indexOf(parsed)], Beautifer(code.join('')))
       code = []
     }
     

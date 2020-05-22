@@ -1,1 +1,2 @@
-const core=require('./core.js');core.print('coucou');
+const core = require('./core.js');
+core.print('coucou');

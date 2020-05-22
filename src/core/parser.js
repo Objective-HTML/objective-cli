@@ -21,7 +21,7 @@ module.exports = class Parser {
               blocks      = [],
               cur_block   = [],
               parse_blcks = []
-        let iterator = -1
+        let iterator = 1
         for (const item of this.lexer) {
             const elements = item[0].split(' | '),
                   letter   = elements[0],
@@ -29,30 +29,29 @@ module.exports = class Parser {
                   status   = item[1]
 
             if (status === 'BLOCK_START') {
-                ++blck_index
                 cur_block.push(letter)
-            } 
-            else if (status === 'SPACE' || status === 'BLOCK_CONTENT') cur_block.push(letter)
+            }else if (status === 'SPACE' || status === 'BLOCK_CONTENT') cur_block.push(letter)
             else if (status === 'BLOCK_END') {
                 cur_block.push(letter)
                 blocks.push(cur_block.join(''))
                 cur_block = []
-            } else if (status === 'BLOCK_VALUE') {
+                ++blck_index
+            } 
+            else if (status === 'BLOCK_VALUE') {
                 if (this.lexer.get(Array.from(this.lexer.keys())[iterator - 1]) !== 'BLOCK_VALUE') {
-                    ++blck_index
                     cur_block.push(letter)
-                } else if (this.lexer.get(Array.from(this.lexer.keys())[iterator + 2]) === 'BLOCK_START'){
+                } else if (this.lexer.get(Array.from(this.lexer.keys())[iterator]) !== 'BLOCK_VALUE' && this.lexer.get(Array.from(this.lexer.keys())[iterator]) !== 'VARIABLE'){
                     cur_block.push(letter)
                     blocks.push(cur_block.join(''))
                     cur_block = []
-                } else cur_block.push(letter)
+                } else {
+                    cur_block.push(letter)
+                }
 
             }
-
             ++iterator
 
         }
-        
         for (const i of blocks) {
             if (i.trim()
                  .startsWith('<') && 
@@ -124,7 +123,6 @@ module.exports = class Parser {
                 })
                 
             } else {
-
                 if (i.match(/\{.*\}/g)) {
                     if (i.match(/\{.*\}/g)[0].length === i.length) {
                         parse_blcks.push({
